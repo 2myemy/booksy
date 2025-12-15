@@ -56,23 +56,27 @@ booksy/
 ```
 git clone https://github.com/your-username/booksy.git
 cd booksy
+
 2. Frontend setup
 ```
 cd client
 npm install
 npm run dev
+
 3. Backend setup
 ```
 cd server
 npm install
 npm run dev
-🌱 Environment Variables
-Create a .env file in the server directory:
 
+🌱 Environment Variables
+
+Create a .env file in the server directory:
 env
 PORT=4000
 DATABASE_URL=your_postgres_url
 JWT_SECRET=your_secret_key
+
 🎯 Project Goals
 Build a real-world full-stack application from scratch
 
