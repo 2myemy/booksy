@@ -24,7 +24,7 @@ coverage/
 # ======================
 # Vite / React
 # ======================
-client/dist/
+# client/dist/
 client/.vite/
 
 # ======================
