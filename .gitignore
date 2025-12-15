@@ -16,7 +16,6 @@ yarn-error.log*
 # ======================
 # Build outputs
 # ======================
-# dist/
 build/
 .out/
 coverage/
@@ -24,7 +23,6 @@ coverage/
 # ======================
 # Vite / React
 # ======================
-# client/dist/
 client/.vite/
 
 # ======================
