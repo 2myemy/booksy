@@ -1,0 +1,216 @@
+import taoCover from "../../assets/tao-of-pooh.png";
+import franklCover from "../../assets/man-search-for-meaning.png";
+import lovingCover from "../../assets/art-of-loving.png";
+
+const books = [
+  {
+    title: "Tao Of Pooh",
+    author: "Benjamin Hoff",
+    price: "$9",
+    condition: "Good",
+    image: taoCover,
+  },
+  {
+    title: "Man's Search for Meaning",
+    author: "Viktor E. Frankl",
+    price: "$7",
+    condition: "Like New",
+    image: franklCover,
+  },
+  {
+    title: "The Art of Loving",
+    author: "Erich Fromm",
+    price: "$10",
+    condition: "Fair",
+    image: lovingCover,
+  },
+];
+
+const cardStyle: React.CSSProperties = {
+  backgroundColor: "rgba(255,255,255,0.65)",
+  border: "1px solid var(--border)",
+  backdropFilter: "blur(12px)",
+};
+
+const pillHoney: React.CSSProperties = {
+  backgroundColor: "rgba(180, 83, 9, 0.12)", // honey tint
+  color: "var(--honey)",
+};
+
+const pillSoft: React.CSSProperties = {
+  backgroundColor: "rgba(31, 41, 55, 0.06)", // ink tint
+  color: "rgba(31, 41, 55, 0.75)",
+};
+
+export default function Hero() {
+  return (
+    <section className="relative overflow-hidden">
+      {/* background */}
+      <div className="absolute inset-0 -z-10">
+        <div
+          className="h-full w-full"
+          style={{
+            background: "linear-gradient(to bottom, #fbf7f0, #fff7ed, #fff1f2)",
+          }}
+        />
+        <div
+          className="absolute -top-28 -left-28 h-96 w-96 rounded-full blur-3xl"
+          style={{ backgroundColor: "rgba(180, 83, 9, 0.14)" }}
+        />
+        <div
+          className="absolute -bottom-32 -right-28 h-[28rem] w-[28rem] rounded-full blur-3xl"
+          style={{ backgroundColor: "rgba(59, 47, 42, 0.10)" }}
+        />
+      </div>
+
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:py-20 lg:grid-cols-2">
+        {/* LEFT */}
+        <div>
+          <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            Your next book is waiting on
+            <span className="block" style={{ color: "var(--walnut)" }}>
+              someone’s shelf.
+            </span>
+          </h1>
+
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-slate-700">
+            Buy and sell used or new books safely—keep great stories moving.
+          </p>
+
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <a
+              href="/books"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:opacity-95"
+              style={{ backgroundColor: "var(--walnut)" }}
+            >
+              Browse Books
+            </a>
+
+            <a
+              href="/sell"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow-sm transition hover:opacity-95"
+              style={{
+                backgroundColor: "rgba(255,255,255,0.65)",
+                border: "1px solid var(--border)",
+                color: "var(--walnut)",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              List a Book
+            </a>
+
+            <span className="text-sm text-slate-600 sm:ml-2">
+              Simple listing · Clear condition tags
+            </span>
+          </div>
+
+          <div
+            className="mt-8 grid grid-cols-3 gap-3 rounded-2xl p-4 text-sm shadow-sm"
+            style={cardStyle}
+          >
+            <div className="text-center">
+              <div className="text-sm font-semibold">Secure authentication</div>
+              <div className="mt-1 text-xs text-slate-600">JWT-based login</div>
+            </div>
+
+            <div className="text-center">
+              <div className="text-sm font-semibold">Browse books</div>
+              <div className="mt-1 text-xs text-slate-600">Search & filter</div>
+            </div>
+
+            <div className="text-center">
+              <div className="text-sm font-semibold">Checkout flow</div>
+              <div className="mt-1 text-xs text-slate-600">
+                Save & message the owner
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className="relative">
+          <div
+            className="rounded-3xl p-6 shadow-lg"
+            style={{
+              ...cardStyle,
+              boxShadow: "0 20px 60px rgba(59, 47, 42, 0.10)",
+            }}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-sm font-semibold">Featured stack</div>
+                <div className="mt-1 text-xs text-slate-600">
+                  Fresh finds from nearby shelves
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4">
+              {books.map((b) => (
+                <div
+                  key={b.title}
+                  className="flex items-center justify-between rounded-2xl p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
+                  style={cardStyle}
+                >
+                  <div className="flex items-center gap-4">
+                    {/* book spine */}
+                    <img
+                      src={b.image}
+                      alt={b.title}
+                      className="h-16 w-12 rounded-md object-cover shadow-sm"
+                      style={{ border: "1px solid var(--border)" }}
+                    />
+                    <div>
+                      <div className="text-sm font-semibold">{b.title}</div>
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                        {b.author && (
+                          <span
+                            className="rounded-full px-2 py-0.5"
+                            style={pillSoft}
+                          >
+                            by {b.author}
+                          </span>
+                        )}
+                        <span
+                          className="rounded-full px-2 py-0.5"
+                          style={pillHoney}
+                        >
+                          {b.condition}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-sm font-semibold">{b.price}</div>
+                    <div className="mt-1 text-xs text-slate-600">incl. tax</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {[
+                { t: "Message the owner", d: "Save it and send a quick message." },
+                { t: "Honest conditions", d: "Clear tags & notes." },
+                { t: "Second life", d: "Keep stories moving." },
+              ].map((x) => (
+                <div key={x.t} className="rounded-2xl p-4" style={cardStyle}>
+                  <div className="text-sm font-semibold">{x.t}</div>
+                  <div className="mt-1 text-xs leading-relaxed text-slate-600">
+                    {x.d}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="pointer-events-none absolute -bottom-6 left-1/2 h-12 w-4/5 -translate-x-1/2 rounded-full blur-2xl"
+            style={{ backgroundColor: "rgba(59, 47, 42, 0.12)" }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
