@@ -43,6 +43,7 @@ focusing on clean UI, RESTful APIs, and real-world application architecture.
 ## 📂 Project Structure
 
 booksy/
+
 ┣ client/ # React + TypeScript frontend
 ┣ server/ # Node.js + Express backend
 ┣ README.md
@@ -76,7 +77,6 @@ npm run dev
 
 Create a .env file in the server directory:
 ```
-env
 PORT=4000
 DATABASE_URL=your_postgres_url
 JWT_SECRET=your_secret_key
