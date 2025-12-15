@@ -45,7 +45,9 @@ focusing on clean UI, RESTful APIs, and real-world application architecture.
 booksy/
 
 ┣ client/ # React + TypeScript frontend
+
 ┣ server/ # Node.js + Express backend
+
 ┣ README.md
 
 
