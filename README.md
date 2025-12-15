@@ -42,3 +42,57 @@ focusing on clean UI, RESTful APIs, and real-world application architecture.
 
 ## 📂 Project Structure
 
+booksy/
+┣ client/ # React + TypeScript frontend
+┣ server/ # Node.js + Express backend
+┣ README.md
+
+
+---
+
+## 🧑‍💻 Getting Started
+
+### 1. Clone the repository
+```
+git clone https://github.com/your-username/booksy.git
+cd booksy
+2. Frontend setup
+```
+cd client
+npm install
+npm run dev
+3. Backend setup
+```
+cd server
+npm install
+npm run dev
+🌱 Environment Variables
+Create a .env file in the server directory:
+
+env
+PORT=4000
+DATABASE_URL=your_postgres_url
+JWT_SECRET=your_secret_key
+🎯 Project Goals
+Build a real-world full-stack application from scratch
+
+Practice frontend architecture with React and TypeScript
+
+Design and implement RESTful APIs
+
+Work with relational databases and authentication
+
+Deploy and connect frontend and backend services
+
+📌 Future Improvements
+Image upload for book listings
+
+Search and filter functionality
+
+User profile pages
+
+Pagination and performance optimization
+
+📬 Contact
+Created by Chloe Lee
+LinkedIn: https://linkedin.com/in/the-chloest
