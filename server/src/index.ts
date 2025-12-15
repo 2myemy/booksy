@@ -11,6 +11,8 @@ app.get("/", (_, res) => {
   res.send("Booksy API running");
 });
 
+app.get("/health", (req, res) => res.status(200).json({ ok: true }));
+
 app.use("/auth", authRoutes);
 
 const PORT = process.env.PORT || 4000;
