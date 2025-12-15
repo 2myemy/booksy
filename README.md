@@ -56,28 +56,34 @@ booksy/
 ```
 git clone https://github.com/your-username/booksy.git
 cd booksy
+```
 
-2. Frontend setup
+### 2. Frontend setup
 ```
 cd client
 npm install
 npm run dev
+```
 
-3. Backend setup
+### 3. Backend setup
 ```
 cd server
 npm install
 npm run dev
+```
 
-🌱 Environment Variables
+## 🌱 Environment Variables
 
 Create a .env file in the server directory:
+```
 env
 PORT=4000
 DATABASE_URL=your_postgres_url
 JWT_SECRET=your_secret_key
+```
 
-🎯 Project Goals
+## 🎯 Project Goals
+
 Build a real-world full-stack application from scratch
 
 Practice frontend architecture with React and TypeScript
@@ -88,7 +94,8 @@ Work with relational databases and authentication
 
 Deploy and connect frontend and backend services
 
-📌 Future Improvements
+## 📌 Future Improvements
+
 Image upload for book listings
 
 Search and filter functionality
