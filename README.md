@@ -49,7 +49,7 @@ focusing on clean UI, RESTful APIs, and real-world application architecture.
 
 ### 1. Clone the repository
 ```
-git clone https://github.com/your-username/booksy.git
+git clone https://github.com/2myemy/booksy.git
 cd booksy
 ```
 
