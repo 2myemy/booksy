@@ -4,7 +4,18 @@ import authRoutes from "./routes/auth";
 
 const app = express();
 
-app.use(cors());
+const allowed = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://booksy-client.netlify.app"
+];
+
+app.use(
+  cors({
+    origin: allowed,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/", (_, res) => {
