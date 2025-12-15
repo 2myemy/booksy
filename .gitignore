@@ -16,7 +16,7 @@ yarn-error.log*
 # ======================
 # Build outputs
 # ======================
-dist/
+# dist/
 build/
 .out/
 coverage/
