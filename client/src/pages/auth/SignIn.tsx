@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
-import { apiPost, type AuthData } from "../../lib/auth";
+import { loginAuth } from "../../lib/auth"; 
 import { useAuth } from "../../auth/AuthContext";
 
 export default function SignIn() {
@@ -21,7 +21,7 @@ export default function SignIn() {
     setErr(null);
     setLoading(true);
     try {
-      const data = await apiPost<AuthData>("/auth/login", { email, password });
+      const data = await loginAuth({ email, password });
       signIn(data.token);
       nav(from, { replace: true });
     } catch (e: any) {

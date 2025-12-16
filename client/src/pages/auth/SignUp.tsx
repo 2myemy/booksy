@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
-import { apiPost, type AuthData } from "../../lib/auth";
+import { registerAuth } from "../../lib/auth"; 
 import { useAuth } from "../../auth/AuthContext";
 
 export default function SignUp() {
@@ -19,11 +19,7 @@ export default function SignUp() {
     setErr(null);
     setLoading(true);
     try {
-      const data = await apiPost<AuthData>("/auth/register", {
-        name,
-        email,
-        password,
-      });
+      const data = await registerAuth({ name, email, password });
       signIn(data.token);
       nav("/", { replace: true });
     } catch (e: any) {
