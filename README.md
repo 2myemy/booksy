@@ -41,8 +41,9 @@ focusing on clean UI, RESTful APIs, and real-world application architecture.
 ---
 
 ## 📂 Project Structure
+```text
 booksy/
-├── client/        # React + TypeScript frontend
+├── client/              # React + TypeScript frontend
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
@@ -50,7 +51,7 @@ booksy/
 │   │   └── styles/
 │   └── index.html
 │
-├── server/        # Node.js + Express backend
+├── server/              # Node.js + Express backend
 │   ├── src/
 │   │   ├── routes/
 │   │   ├── controllers/
