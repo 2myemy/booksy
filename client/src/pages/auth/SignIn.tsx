@@ -57,8 +57,13 @@ export default function SignIn() {
         />
 
         {err && (
-          <div className="rounded-xl border p-3 text-sm"
-               style={{ borderColor: "rgba(220,38,38,0.25)", backgroundColor: "rgba(220,38,38,0.06)" }}>
+          <div
+            className="rounded-xl border p-3 text-sm"
+            style={{
+              borderColor: "rgba(220,38,38,0.25)",
+              backgroundColor: "rgba(220,38,38,0.06)",
+            }}
+          >
             {err}
           </div>
         )}
