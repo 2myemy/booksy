@@ -1,7 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-console.log(API_BASE);
-
 if (!API_BASE) {
   console.error("ENV DUMP:", import.meta.env);
   throw new Error("Missing VITE_API_BASE_URL (Netlify env var not applied)");
