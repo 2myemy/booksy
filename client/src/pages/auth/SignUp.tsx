@@ -19,7 +19,11 @@ export default function SignUp() {
     setErr(null);
     setLoading(true);
     try {
-      const data = await apiPost<AuthData>("/auth/register", { name, email, password });
+      const data = await apiPost<AuthData>("/auth/register", {
+        name,
+        email,
+        password,
+      });
       signIn(data.token);
       nav("/", { replace: true });
     } catch (e: any) {
@@ -31,7 +35,9 @@ export default function SignUp() {
 
   return (
     <AuthLayout>
-      <h1 className="text-xl font-semibold text-slate-900">Create your account</h1>
+      <h1 className="text-xl font-semibold text-slate-900">
+        Create your account
+      </h1>
       <p className="mt-1 text-sm text-slate-600">
         Sign up to pass your books on to someone new.
       </p>
@@ -66,8 +72,13 @@ export default function SignUp() {
         />
 
         {err && (
-          <div className="rounded-xl border p-3 text-sm"
-               style={{ borderColor: "rgba(220,38,38,0.25)", backgroundColor: "rgba(220,38,38,0.06)" }}>
+          <div
+            className="rounded-xl border p-3 text-sm"
+            style={{
+              borderColor: "rgba(220,38,38,0.25)",
+              backgroundColor: "rgba(220,38,38,0.06)",
+            }}
+          >
             {err}
           </div>
         )}
