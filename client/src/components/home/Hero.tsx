@@ -27,9 +27,10 @@ const books = [
 ];
 
 const cardStyle: React.CSSProperties = {
-  backgroundColor: "rgba(255,255,255,0.65)",
-  border: "1px solid var(--border)",
-  backdropFilter: "blur(12px)",
+  backgroundColor: "rgba(255,255,255,0.72)",
+  border: "1px solid rgba(180, 83, 9, 0.16)",
+  backdropFilter: "blur(6px)", // 12 -> 6 (유리 느낌 감소)
+  boxShadow: "0 10px 28px rgba(59, 47, 42, 0.10)", // 더 따뜻한 그림자
 };
 
 const pillHoney: React.CSSProperties = {
@@ -46,6 +47,7 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden">
       {/* background */}
+      {/* background */}
       <div className="absolute inset-0 -z-10">
         <div
           className="h-full w-full"
@@ -53,6 +55,20 @@ export default function Hero() {
             background: "linear-gradient(to bottom, #fbf7f0, #fff7ed, #fff1f2)",
           }}
         />
+
+        {/* ✨ attic paper grain + warm spotlight */}
+        <div
+          className="absolute inset-0 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 15%, rgba(180,83,9,0.18), transparent 45%)," +
+              "radial-gradient(circle at 80% 30%, rgba(59,47,42,0.10), transparent 55%)," +
+              "repeating-linear-gradient(0deg, rgba(59,47,42,0.03) 0px, rgba(59,47,42,0.03) 1px, transparent 1px, transparent 6px)",
+            mixBlendMode: "multiply",
+          }}
+        />
+
+
         <div
           className="absolute -top-28 -left-28 h-96 w-96 rounded-full blur-3xl"
           style={{ backgroundColor: "rgba(180, 83, 9, 0.14)" }}
@@ -63,7 +79,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:py-20 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:py-20 lg:grid-cols-2 lg:-translate-y-4">
         {/* LEFT */}
         <div>
           <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
@@ -133,14 +149,16 @@ export default function Hero() {
             className="rounded-3xl p-6 shadow-lg"
             style={{
               ...cardStyle,
-              boxShadow: "0 20px 60px rgba(59, 47, 42, 0.10)",
+              backgroundColor: "rgba(255,255,255,0.62)",
+              border: "1px solid rgba(59,47,42,0.12)",
+              boxShadow: "0 24px 80px rgba(59,47,42,0.14)",
             }}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-sm font-semibold">Featured stack</div>
+                <div className="text-sm font-semibold">Attic picks ✨</div>
                 <div className="mt-1 text-xs text-slate-600">
-                  Fresh finds from nearby shelves
+                  Warm finds from well-loved shelves
                 </div>
               </div>
             </div>
@@ -158,7 +176,11 @@ export default function Hero() {
                       src={b.image}
                       alt={b.title}
                       className="h-16 w-12 rounded-md object-cover shadow-sm"
-                      style={{ border: "1px solid var(--border)" }}
+                      style={{
+                        border: "1px solid rgba(59,47,42,0.12)",
+                        boxShadow: "0 6px 14px rgba(59,47,42,0.18)",
+                        transform: "rotate(-1.5deg)",
+                      }}
                     />
                     <div>
                       <div className="text-sm font-semibold">{b.title}</div>
@@ -191,7 +213,10 @@ export default function Hero() {
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
-                { t: "Message the owner", d: "Save it and send a quick message." },
+                {
+                  t: "Message the owner",
+                  d: "Save it and send a quick message.",
+                },
                 { t: "Honest conditions", d: "Clear tags & notes." },
                 { t: "Second life", d: "Keep stories moving." },
               ].map((x) => (
