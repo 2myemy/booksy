@@ -41,6 +41,24 @@ focusing on clean UI, RESTful APIs, and real-world application architecture.
 ---
 
 ## 📂 Project Structure
+booksy/
+├── client/        # React + TypeScript frontend
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── assets/
+│   │   └── styles/
+│   └── index.html
+│
+├── server/        # Node.js + Express backend
+│   ├── src/
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   └── db/
+│   └── index.ts
+│
+└── README.md
 
 
 ---
