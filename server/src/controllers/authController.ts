@@ -54,3 +54,40 @@ export const register = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required." });
+    }
+
+    const result = await pool.query(
+      "SELECT id, email, password_hash FROM users WHERE email = $1",
+      [email]
+    );
+
+    const user = result.rows[0];
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" }
+    );
+    
+
+    return res.json({ token });
+  } catch (err) {
+    console.error("LOGIN_ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
