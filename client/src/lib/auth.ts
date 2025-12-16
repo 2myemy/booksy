@@ -31,17 +31,13 @@ export function clearToken() {
  *  Env + URL helpers (safe)
  *  ----------------------------- */
 function getApiBase(): string {
-  // ✅ 여기 키를 “하나로 통일”하자: VITE_API_URL
   const raw = import.meta.env.VITE_API_URL as string | undefined;
 
   if (!raw || raw.trim() === "") {
-    // 이 에러가 뜨면 Netlify env가 안 먹힌 거
     throw new Error(
       "Missing VITE_API_URL. Set it in Netlify environment variables (Production) and redeploy."
     );
   }
-
-  // trailing slash 제거해서 `${base}${path}`가 안전해짐
   return raw.replace(/\/+$/, "");
 }
 
@@ -49,11 +45,6 @@ function normalizePath(path: string) {
   return path.startsWith("/") ? path : `/${path}`;
 }
 
-/** -----------------------------
- *  Low-level request helper
- *  - JSON 응답/에러를 최대한 친절하게 처리
- *  - Authorization 자동 지원
- *  ----------------------------- */
 async function apiRequest<T>(
   method: "POST" | "GET" | "PUT" | "DELETE",
   path: string,
