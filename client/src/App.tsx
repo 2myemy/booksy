@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
 import ListBook from "./pages/ListBook";
+import Books from "./pages/Books";
+import MyBooks from "./pages/MyBooks";
 import RequireAuth from "./auth/RequireAuth";
 import "./App.css";
 
@@ -26,7 +28,16 @@ function App() {
         />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/shelf" element={<div className="mx-auto max-w-6xl px-4 py-10">My shelf (coming soon)</div>} />
+
+        <Route path="/books" element={<Books />} />
+        <Route
+          path="/shelf"
+          element={
+            <RequireAuth>
+              <MyBooks />
+            </RequireAuth>
+          }
+        />
       </Routes>
 
       <Footer />
