@@ -66,7 +66,7 @@ export default function MyBooks() {
       )}
 
       {books.length > 0 && (
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {books.map((b) => (
             <BookCard key={b.id} book={b as any} />
           ))}
