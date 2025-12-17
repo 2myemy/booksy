@@ -103,7 +103,7 @@ export default function Hero() {
             </a>
 
             <a
-              href="/sell"
+              href="/list"
               className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow-sm transition hover:opacity-95"
               style={{
                 backgroundColor: "rgba(255,255,255,0.65)",

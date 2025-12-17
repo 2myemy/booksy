@@ -4,7 +4,7 @@ import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
-import Sell from "./pages/Sell";
+import ListBook from "./pages/ListBook";
 import RequireAuth from "./auth/RequireAuth";
 import "./App.css";
 
@@ -17,10 +17,10 @@ function App() {
         <Route path="/" element={<Home />} />
 
         <Route
-          path="/sell"
+          path="/list"
           element={
             <RequireAuth>
-              <Sell />
+              <ListBook />
             </RequireAuth>
           }
         />

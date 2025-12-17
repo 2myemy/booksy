@@ -1,0 +1,9 @@
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({ 
+  cloud_name: 'dcppepvah', 
+  api_key: '174194173992346', 
+  api_secret: 'Kam-8mmi7OeVmI3kKaOkC7fvTvE' // Click 'View API Keys' above to copy your API secret
+});
+
+export default cloudinary;

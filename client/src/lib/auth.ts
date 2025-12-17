@@ -129,3 +129,40 @@ export async function authedPost<T>(path: string, body: unknown): Promise<T> {
 
   return apiRequest<T>("POST", path, body, token);
 }
+
+export async function authedMultipartPost<T>(path: string, formData: FormData): Promise<T> {
+  const token = getToken();
+  if (!token) throw new Error("Not authenticated");
+
+  const base = getApiBase();
+  const url = `${base}${normalizePath(path)}`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      // ⚠️ Content-Type 지정하지 마! 브라우저가 boundary 포함해서 자동 설정
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  const contentType = res.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+
+  if (!res.ok) {
+    let message = `Request failed: ${res.status}`;
+    try {
+      if (isJson) {
+        const data = await res.json();
+        message = data?.message || data?.error || message;
+      } else {
+        const text = await res.text();
+        if (text && text.trim().length > 0) message = text.slice(0, 200);
+      }
+    } catch {}
+    throw new Error(message);
+  }
+
+  if (res.status === 204) return undefined as any;
+  return (isJson ? res.json() : (res.text() as any)) as Promise<T>;
+}

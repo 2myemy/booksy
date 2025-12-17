@@ -85,7 +85,7 @@ export default function Navbar() {
           )}
 
           <Link
-            to="/sell"
+            to="/list"
             className="rounded-xl px-4 py-2 font-semibold text-white transition hover:opacity-95"
             style={{ backgroundColor: "var(--walnut)" }}
           >
@@ -177,7 +177,7 @@ export default function Navbar() {
             )}
 
             <Link
-              to="/sell"
+              to="/list"
               className="mt-1 block rounded-xl px-4 py-3 text-sm font-semibold text-white"
               style={{ backgroundColor: "var(--walnut)" }}
               onClick={() => setOpen(false)}

@@ -10,7 +10,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const token = header.slice("Bearer ".length);
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET as string) as any;
-    // req.userId 같은 걸로 저장해두면 이후 라우트에서 owner_id로 씀
     (req as any).userId = payload.userId;
     (req as any).role = payload.role;
     return next();
