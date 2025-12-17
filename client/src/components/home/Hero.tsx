@@ -69,6 +69,12 @@ const pillSoft: React.CSSProperties = {
   color: "rgba(31, 41, 55, 0.75)",
 };
 
+function formatPrice(price_cents: number) {
+  const amount = price_cents / 100;
+  return `$${Math.round(amount)}`;
+}
+
+
 export default function Hero() {
   const [latest, setLatest] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
@@ -260,7 +266,7 @@ export default function Hero() {
 
                   <div className="text-right">
                     <div className="text-sm font-semibold">
-                      ${b.price_cents}
+                      {formatPrice(b.price_cents)}
                     </div>
                     <div className="mt-1 text-xs text-slate-600">incl. tax</div>
                   </div>

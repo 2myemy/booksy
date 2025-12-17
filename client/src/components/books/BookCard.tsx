@@ -11,6 +11,11 @@ type Book = {
   username?: string; // listBooks에서 join한 경우
 };
 
+function formatPrice(price_cents: number) {
+  const amount = price_cents / 100;
+  return `$${Math.round(amount)}`;
+}
+
 export default function BookCard({ book }: { book: Book }) {
   const img = cloudThumb(book.cover_image_url, 320, 420);
 
@@ -40,7 +45,7 @@ export default function BookCard({ book }: { book: Book }) {
             <p className="truncate text-sm text-slate-600">{book.author}</p>
           </div>
           <p className="shrink-0 text-sm font-semibold text-slate-900">
-            ${book.price_cents}
+            ${formatPrice(book.price_cents)}
           </p>
         </div>
 
