@@ -5,6 +5,6 @@ import { createBook } from "../controllers/booksController";
 
 const router = Router();
 
-router.post("/list", requireAuth, upload.single("cover"), createBook);
+router.post("/", requireAuth, upload.single("cover"), createBook);
 
 export default router;
