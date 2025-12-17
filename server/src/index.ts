@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth";
-import bookRoutes from "./routes/books";
+import booksRoutes from "./routes/books";
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.get("/", (_, res) => {
 app.get("/health", (req, res) => res.status(200).json({ ok: true }));
 
 app.use("/auth", authRoutes);
-app.use("/books", authRoutes);
+app.use("/books", booksRoutes);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
