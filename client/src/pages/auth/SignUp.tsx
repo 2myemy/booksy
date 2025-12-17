@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
-import { registerAuth } from "../../lib/auth"; 
+import { registerAuth } from "../../lib/auth";
 import { useAuth } from "../../auth/AuthContext";
 
 export default function SignUp() {
   const nav = useNavigate();
   const { signIn } = useAuth();
 
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
@@ -19,8 +19,8 @@ export default function SignUp() {
     setErr(null);
     setLoading(true);
     try {
-      const data = await registerAuth({ name, email, password });
-      signIn(data.token);
+      const data = await registerAuth({ username, email, password });
+      signIn(data.token, data.user);
       nav("/", { replace: true });
     } catch (e: any) {
       setErr(e.message || "Sign up failed");
@@ -41,9 +41,9 @@ export default function SignUp() {
       <form className="mt-6 space-y-4" onSubmit={onSubmit}>
         <input
           type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value.trim().toLowerCase())}
           className="w-full rounded-xl border px-4 py-3 text-sm outline-none"
           style={{ borderColor: "var(--border)" }}
           required

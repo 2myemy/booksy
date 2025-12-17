@@ -1,8 +1,9 @@
-// src/auth/auth.ts (경로는 너 프로젝트에 맞게)
 export type AuthUser = {
   id: string;
   email: string;
-  name?: string;
+  username: string;
+  role: "USER" | "ADMIN";
+  is_active: boolean;
 };
 
 export type AuthData = {
@@ -74,13 +75,9 @@ async function apiRequest<T>(
     try {
       if (isJson) {
         const data = await res.json();
-        message =
-          data?.message ||
-          data?.error ||
-          message;
+        message = data?.message || data?.error || message;
       } else {
         const text = await res.text();
-        // HTML 404 같은 걸 그대로 던지면 지저분하니 적당히 컷
         if (text && text.trim().length > 0) {
           message = text.slice(0, 200);
         }
@@ -107,14 +104,14 @@ async function apiRequest<T>(
 
 // 백엔드: POST /auth/register  -> { user, token }
 export async function registerAuth(input: {
-  name: string;
+  username: string;
   email: string;
   password: string;
 }): Promise<AuthData> {
   return apiRequest<AuthData>("POST", "/auth/register", input);
 }
 
-// 백엔드: POST /auth/login -> { token } (혹은 { token, user }로 확장 가능)
+// 백엔드: POST /auth/login -> { token, user }
 export async function loginAuth(input: {
   email: string;
   password: string;

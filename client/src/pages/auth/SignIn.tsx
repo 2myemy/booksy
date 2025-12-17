@@ -22,7 +22,7 @@ export default function SignIn() {
     setLoading(true);
     try {
       const data = await loginAuth({ email, password });
-      signIn(data.token);
+      signIn(data.token, data.user);
       nav(from, { replace: true });
     } catch (e: any) {
       setErr(e.message || "Login failed");
