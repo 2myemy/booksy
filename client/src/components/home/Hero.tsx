@@ -12,7 +12,7 @@ type Book = {
   status: string;
   cover_image_url: string | null;
 };
-
+const API = import.meta.env.VITE_API_URL;
 const fallbackBooks: Book[] = [
   {
     id: "fallback-1",
@@ -77,8 +77,7 @@ export default function Hero() {
     (async () => {
       try {
         setLoading(true);
-
-        const res = await fetch("/books?sort=latest&limit=3");
+        const res = await fetch(`${API}/books?sort=latest&limit=3`);
         if (!res.ok) throw new Error("Failed to load latest books");
         const data = await res.json(); // { books: Book[] } 또는 Book[]
 
