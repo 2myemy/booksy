@@ -166,3 +166,13 @@ export async function authedMultipartPost<T>(path: string, formData: FormData): 
   if (res.status === 204) return undefined as any;
   return (isJson ? res.json() : (res.text() as any)) as Promise<T>;
 }
+
+export async function apiGet<T>(path: string): Promise<T> {
+  return apiRequest<T>("GET", path);
+}
+
+export async function authedGet<T>(path: string): Promise<T> {
+  const token = getToken();
+  if (!token) throw new Error("Not authenticated");
+  return apiRequest<T>("GET", path, undefined, token);
+}

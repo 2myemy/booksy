@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AuthLayout from "../pages/auth/AuthLayout";
 import { authedMultipartPost } from "../lib/auth";
 
 type Condition = "NEW" | "LIKE_NEW" | "VERY_GOOD" | "GOOD" | "ACCEPTABLE";
@@ -40,8 +41,11 @@ export default function ListBook() {
   }
 
   return (
-    <div className="mx-auto max-w-lg p-6">
+    <AuthLayout>
       <h1 className="text-xl font-semibold text-slate-900">List a book</h1>
+      <p className="mt-1 text-sm text-slate-600">
+        Add a book with a cover image so someone can buy it.
+      </p>
 
       <form className="mt-6 space-y-4" onSubmit={onSubmit}>
         <input
@@ -114,6 +118,13 @@ export default function ListBook() {
           {loading ? "Listing..." : "List book"}
         </button>
       </form>
-    </div>
+
+      <p className="mt-6 text-center text-sm text-slate-600">
+        Changed your mind?{" "}
+        <Link to="/" style={{ color: "var(--honey)" }}>
+          Go back
+        </Link>
+      </p>
+    </AuthLayout>
   );
 }

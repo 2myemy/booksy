@@ -78,3 +78,51 @@ export async function createBook(req: Request, res: Response) {
     return res.status(500).json({ message: "Server error" });
   }
 }
+
+export async function listBooks(req: Request, res: Response) {
+  try {
+    const result = await pool.query(
+      `
+      SELECT
+        b.id, b.title, b.author, b.price_cents,
+        b.condition, b.status, b.cover_image_url,
+        b.owner_id, b.created_at,
+        u.username
+      FROM books b
+      JOIN users u ON u.id = b.owner_id
+      WHERE b.status = 'ACTIVE'
+      ORDER BY b.created_at DESC
+      LIMIT 50;
+      `
+    );
+
+    return res.json({ books: result.rows });
+  } catch (err) {
+    console.error("LIST_BOOKS_ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+export async function listMyBooks(req: Request, res: Response) {
+  try {
+    const ownerId = (req as any).userId as string | undefined;
+    if (!ownerId) return res.status(401).json({ message: "Not authenticated" });
+
+    const result = await pool.query(
+      `
+      SELECT
+        id, title, author, price_cents,
+        condition, status, cover_image_url, created_at
+      FROM books
+      WHERE owner_id = $1
+      ORDER BY created_at DESC;
+      `,
+      [ownerId]
+    );
+
+    return res.json({ books: result.rows });
+  } catch (err) {
+    console.error("LIST_MY_BOOKS_ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
