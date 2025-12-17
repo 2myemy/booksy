@@ -1,52 +1,105 @@
+import { useEffect, useMemo, useState } from "react";
 import taoCover from "../../assets/tao-of-pooh.png";
 import franklCover from "../../assets/man-search-for-meaning.png";
 import lovingCover from "../../assets/art-of-loving.png";
 
-const books = [
+type Book = {
+  id: string;
+  title: string;
+  author: string;
+  price_cents: number;
+  currency: string;
+  status: string;
+  cover_image_url: string | null;
+};
+
+const fallbackBooks: Book[] = [
   {
+    id: "fallback-1",
     title: "Tao Of Pooh",
     author: "Benjamin Hoff",
-    price: "$9",
-    condition: "Good",
-    image: taoCover,
+    price_cents: 900,
+    currency: "USD",
+    status: "GOOD",
+    cover_image_url: taoCover as any,
   },
   {
+    id: "fallback-2",
     title: "Man's Search for Meaning",
     author: "Viktor E. Frankl",
-    price: "$7",
-    condition: "Like New",
-    image: franklCover,
+    price_cents: 700,
+    currency: "USD",
+    status: "LIKE_NEW",
+    cover_image_url: franklCover as any,
   },
   {
+    id: "fallback-3",
     title: "The Art of Loving",
     author: "Erich Fromm",
-    price: "$10",
-    condition: "Fair",
-    image: lovingCover,
+    price_cents: 1000,
+    currency: "USD",
+    status: "ACCEPTABLE",
+    cover_image_url: lovingCover as any,
   },
 ];
+
+const conditionLabel: Record<string, string> = {
+  NEW: "New",
+  LIKE_NEW: "Like New",
+  VERY_GOOD: "Very Good",
+  GOOD: "Good",
+  ACCEPTABLE: "Acceptable",
+  FAIR: "Fair",
+};
 
 const cardStyle: React.CSSProperties = {
   backgroundColor: "rgba(255,255,255,0.72)",
   border: "1px solid rgba(180, 83, 9, 0.16)",
-  backdropFilter: "blur(6px)", // 12 -> 6 (유리 느낌 감소)
-  boxShadow: "0 10px 28px rgba(59, 47, 42, 0.10)", // 더 따뜻한 그림자
+  backdropFilter: "blur(6px)",
+  boxShadow: "0 10px 28px rgba(59, 47, 42, 0.10)",
 };
 
 const pillHoney: React.CSSProperties = {
-  backgroundColor: "rgba(180, 83, 9, 0.12)", // honey tint
+  backgroundColor: "rgba(180, 83, 9, 0.12)",
   color: "var(--honey)",
 };
 
 const pillSoft: React.CSSProperties = {
-  backgroundColor: "rgba(31, 41, 55, 0.06)", // ink tint
+  backgroundColor: "rgba(31, 41, 55, 0.06)",
   color: "rgba(31, 41, 55, 0.75)",
 };
 
 export default function Hero() {
+  const [latest, setLatest] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+
+        const res = await fetch("/books?sort=latest&limit=3");
+        if (!res.ok) throw new Error("Failed to load latest books");
+        const data = await res.json(); // { books: Book[] } 또는 Book[]
+
+        const list: Book[] = Array.isArray(data) ? data : data.books;
+        setLatest((list || []).slice(0, 3));
+      } catch {
+        setLatest([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  const booksToShow = useMemo(() => {
+    if (loading) return fallbackBooks;
+    if (latest.length > 0) return latest;
+    return fallbackBooks;
+  }, [loading, latest]);
+
   return (
     <section className="relative overflow-hidden">
-      {/* background */}
       {/* background */}
       <div className="absolute inset-0 -z-10">
         <div
@@ -67,7 +120,6 @@ export default function Hero() {
             mixBlendMode: "multiply",
           }}
         />
-
 
         <div
           className="absolute -top-28 -left-28 h-96 w-96 rounded-full blur-3xl"
@@ -156,24 +208,27 @@ export default function Hero() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-sm font-semibold">Attic picks ✨</div>
+                <div className="text-sm font-semibold">Just listed ✨</div>
                 <div className="mt-1 text-xs text-slate-600">
-                  Warm finds from well-loved shelves
+                  Fresh finds from the community
                 </div>
               </div>
+
+              {loading && (
+                <span className="text-xs text-slate-500">Loading…</span>
+              )}
             </div>
 
             <div className="mt-6 grid gap-4">
-              {books.map((b) => (
+              {booksToShow.map((b) => (
                 <div
-                  key={b.title}
+                  key={b.id}
                   className="flex items-center justify-between rounded-2xl p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
                   style={cardStyle}
                 >
                   <div className="flex items-center gap-4">
-                    {/* book spine */}
                     <img
-                      src={b.image}
+                      src={b.cover_image_url || taoCover}
                       alt={b.title}
                       className="h-16 w-12 rounded-md object-cover shadow-sm"
                       style={{
@@ -182,6 +237,7 @@ export default function Hero() {
                         transform: "rotate(-1.5deg)",
                       }}
                     />
+
                     <div>
                       <div className="text-sm font-semibold">{b.title}</div>
                       <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
@@ -197,14 +253,16 @@ export default function Hero() {
                           className="rounded-full px-2 py-0.5"
                           style={pillHoney}
                         >
-                          {b.condition}
+                          {conditionLabel[b.status] ?? b.status}
                         </span>
                       </div>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <div className="text-sm font-semibold">{b.price}</div>
+                    <div className="text-sm font-semibold">
+                      ${b.price_cents}
+                    </div>
                     <div className="mt-1 text-xs text-slate-600">incl. tax</div>
                   </div>
                 </div>
