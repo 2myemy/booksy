@@ -9,7 +9,7 @@ type Book = {
   author: string;
   price_cents: number;
   currency: string;
-  status: string;
+  condition: string;
   cover_image_url: string | null;
 };
 const API = import.meta.env.VITE_API_URL;
@@ -20,7 +20,7 @@ const fallbackBooks: Book[] = [
     author: "Benjamin Hoff",
     price_cents: 900,
     currency: "USD",
-    status: "GOOD",
+    condition: "GOOD",
     cover_image_url: taoCover as any,
   },
   {
@@ -29,7 +29,7 @@ const fallbackBooks: Book[] = [
     author: "Viktor E. Frankl",
     price_cents: 700,
     currency: "USD",
-    status: "LIKE_NEW",
+    condition: "LIKE_NEW",
     cover_image_url: franklCover as any,
   },
   {
@@ -38,7 +38,7 @@ const fallbackBooks: Book[] = [
     author: "Erich Fromm",
     price_cents: 1000,
     currency: "USD",
-    status: "ACCEPTABLE",
+    condition: "ACCEPTABLE",
     cover_image_url: lovingCover as any,
   },
 ];
@@ -258,7 +258,7 @@ export default function Hero() {
                           className="rounded-full px-2 py-0.5"
                           style={pillHoney}
                         >
-                          {conditionLabel[b.status] ?? b.status}
+                          {conditionLabel[b.condition] ?? b.condition}
                         </span>
                       </div>
                     </div>

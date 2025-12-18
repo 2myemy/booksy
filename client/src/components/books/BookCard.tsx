@@ -45,7 +45,7 @@ export default function BookCard({ book }: { book: Book }) {
             <p className="truncate text-sm text-slate-600">{book.author}</p>
           </div>
           <p className="shrink-0 text-sm font-semibold text-slate-900">
-            ${formatPrice(book.price_cents)}
+            {formatPrice(book.price_cents)}
           </p>
         </div>
 
