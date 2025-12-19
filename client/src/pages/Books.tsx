@@ -220,12 +220,9 @@ export default function Books() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Title, author, or seller…"
+            placeholder="Title, author, or seller..."
             className="mt-1 w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[rgba(59,47,42,0.18)]"
           />
-          <div className="mt-1 text-xs text-slate-500">
-            Tip: try “Fromm”, “Hoff”, or a seller username.
-          </div>
         </div>
 
         {/* Condition */}
