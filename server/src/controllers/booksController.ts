@@ -214,6 +214,29 @@ export async function listBooks(req: Request, res: Response) {
   }
 }
 
+export async function listMyBooks(req: Request, res: Response) {
+  try {
+    const ownerId = (req as any).userId as string | undefined;
+    if (!ownerId) return res.status(401).json({ message: "Not authenticated" });
+
+    const result = await pool.query(
+      `
+      SELECT
+        id, title, author, price_cents,
+        condition, status, cover_image_url, created_at
+      FROM books
+      WHERE owner_id = $1
+      ORDER BY created_at DESC;
+      `,
+      [ownerId]
+    );
+
+    return res.json({ books: result.rows });
+  } catch (err) {
+    console.error("LIST_MY_BOOKS_ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
 
 export async function getBookById(req: Request, res: Response) {
   try {
