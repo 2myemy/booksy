@@ -143,3 +143,35 @@ export async function listMyBooks(req: Request, res: Response) {
     return res.status(500).json({ message: "Server error" });
   }
 }
+
+export async function getBookById(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ message: "Missing book id" });
+
+    const result = await pool.query(
+      `
+      SELECT
+        b.id, b.title, b.author, b.price_cents,
+        b.condition, b.status, b.cover_image_url,
+        b.owner_id, b.created_at,
+        u.username
+      FROM books b
+      JOIN users u ON u.id = b.owner_id
+      WHERE b.id = $1
+      LIMIT 1;
+      `,
+      [id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    return res.json({ book: result.rows[0] });
+  } catch (err) {
+    console.error("GET_BOOK_BY_ID_ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+}

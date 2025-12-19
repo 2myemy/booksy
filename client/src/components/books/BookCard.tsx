@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { cloudThumb } from "../../lib/cloudinary";
 
 type Book = {
@@ -8,7 +9,7 @@ type Book = {
   condition: string;
   status: string;
   cover_image_url: string | null;
-  username?: string; // listBooks에서 join한 경우
+  username?: string;
 };
 
 function formatPrice(price_cents: number) {
@@ -20,7 +21,10 @@ export default function BookCard({ book }: { book: Book }) {
   const img = cloudThumb(book.cover_image_url, 320, 420);
 
   return (
-    <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+    <Link
+      to={`/books/${book.id}`}
+      className="block overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-300"
+    >
       <div className="aspect-[3/4] w-full bg-slate-100">
         {img ? (
           <img
@@ -54,6 +58,6 @@ export default function BookCard({ book }: { book: Book }) {
           {book.username ? <span>@{book.username}</span> : null}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

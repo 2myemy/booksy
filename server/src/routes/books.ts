@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/requireAuth";
 import { upload } from "../middleware/upload";
-import { createBook, listBooks, listMyBooks } from "../controllers/booksController";
+import { createBook, listBooks, listMyBooks, getBookById } from "../controllers/booksController";
 
 const router = Router();
 
 router.get("/", listBooks);
-router.post("/", requireAuth, upload.single("cover"), createBook);
 router.get("/mine", requireAuth, listMyBooks);
+router.get("/:id", getBookById); 
+router.post("/", requireAuth, upload.single("cover"), createBook);
 
 export default router;

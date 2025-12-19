@@ -7,6 +7,8 @@ import SignUp from "./pages/auth/SignUp";
 import ListBook from "./pages/ListBook";
 import Books from "./pages/Books";
 import MyBooks from "./pages/MyBooks";
+import BookDetailPage from "./pages/BookDetailPage";
+import CartPage from "./pages/CartPage";
 import RequireAuth from "./auth/RequireAuth";
 import "./App.css";
 
@@ -38,6 +40,8 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route path="books/:id" element={<BookDetailPage />} />
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
 
       <Footer />
