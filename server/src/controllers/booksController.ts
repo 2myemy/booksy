@@ -1,5 +1,4 @@
 import type { Request, Response } from "express";
-import type { Multer } from "multer";
 import type { UploadApiResponse } from "cloudinary";
 import { pool } from "../db";
 import cloudinary from "../lib/cloudinary";
@@ -16,17 +15,31 @@ function toCents(input: unknown): number | null {
   return null;
 }
 
-function uploadBufferToCloudinary(buffer: Buffer, folder = "booksy/books") {
+type UploadedFile = {
+  buffer: Buffer;
+  mimetype?: string;
+  originalname?: string;
+};
+
+function uploadBufferToCloudinary(
+  file: UploadedFile,
+  folder = "booksy/books"
+): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      // Cloudinary TS 타입에서 folder가 좁게 잡힐 때가 있어서 안전하게 캐스팅
-      ({ folder, resource_type: "image" } as any),
+      {
+        folder,
+        resource_type: "image",
+        // 원하면 파일명 유지(선택)
+        // public_id: file.originalname ? file.originalname.replace(/\.[^/.]+$/, "") : undefined,
+      },
       (err: unknown, result?: UploadApiResponse) => {
         if (err || !result) return reject(err);
         resolve(result.secure_url);
       }
     );
-    stream.end(buffer);
+
+    stream.end(file.buffer);
   });
 }
 
@@ -57,10 +70,14 @@ export async function createBook(req: Request, res: Response) {
     let coverImageUrl: string | null = null;
 
     // multer가 넣어준 파일
-    type UploadedFile = { buffer: Buffer; mimetype?: string; originalname?: string };
     const file = (req as any).file as UploadedFile | undefined;
+
+    // (선택) 이미지 mimetype만 허용 - multer fileFilter가 이미 막고 있지만, 서버 쪽에서도 한 번 더 방어
     if (file?.buffer) {
-      coverImageUrl = await uploadBufferToCloudinary(file.buffer);
+      if (file.mimetype && !file.mimetype.startsWith("image/")) {
+        return res.status(400).json({ message: "Cover must be an image file." });
+      }
+      coverImageUrl = await uploadBufferToCloudinary(file, "booksy/books");
     }
 
     const result = await pool.query(
@@ -79,7 +96,7 @@ export async function createBook(req: Request, res: Response) {
   }
 }
 
-export async function listBooks(req: Request, res: Response) {
+export async function listBooks(_req: Request, res: Response) {
   try {
     const result = await pool.query(
       `

@@ -74,7 +74,6 @@ function formatPrice(price_cents: number) {
   return Math.round(amount);
 }
 
-
 export default function Hero() {
   const [latest, setLatest] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
