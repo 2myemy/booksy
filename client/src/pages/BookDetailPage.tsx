@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { apiGet } from "../lib/auth";
 import { cloudThumb } from "../lib/cloudinary";
 import { addToCart, isInCart, type CartItem } from "../lib/cart";
+import { Tag } from "../components/ui/Tag";
 
 type BookDetail = {
   id: string;
@@ -68,7 +69,7 @@ export default function BookDetailPage() {
     //   bookTitle: book.title,
     // });
     // nav(`/messages/new?${params.toString()}`);
-    alert("Message Seller coming soon :)")
+    alert("Message Seller coming soon :)");
   };
 
   const handleAddToCart = () => {
@@ -95,7 +96,10 @@ export default function BookDetailPage() {
 
     // notice 자동 제거
     window.clearTimeout((handleAddToCart as any)._t);
-    (handleAddToCart as any)._t = window.setTimeout(() => setNotice(null), 1600);
+    (handleAddToCart as any)._t = window.setTimeout(
+      () => setNotice(null),
+      1600
+    );
   };
 
   if (loading) {
@@ -132,9 +136,7 @@ export default function BookDetailPage() {
           ← Back to market
         </Link>
 
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">
-          {book.status}
-        </span>
+        <Tag tone="success">{book.status}</Tag>
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-2">
@@ -155,18 +157,20 @@ export default function BookDetailPage() {
 
           <div className="border-t p-4">
             <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
-              <span className="rounded-full bg-slate-100 px-3 py-1">
+              <Tag tone="neutral">
                 {formatCondition(book.condition)}
-              </span>
-              <span className="rounded-full bg-slate-100 px-3 py-1">
+              </Tag>
+              <Tag tone="meta">
                 Listed {new Date(book.created_at).toLocaleDateString()}
-              </span>
+              </Tag>
             </div>
           </div>
         </div>
 
         <div>
-          <h1 className="text-3xl font-semibold text-slate-900">{book.title}</h1>
+          <h1 className="text-3xl font-semibold text-slate-900">
+            {book.title}
+          </h1>
           <p className="mt-2 text-lg text-slate-700">{book.author}</p>
 
           <div className="mt-6 flex items-end justify-between">
