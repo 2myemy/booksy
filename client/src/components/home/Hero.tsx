@@ -114,7 +114,6 @@ export default function Hero() {
           }}
         />
 
-        {/* ✨ attic paper grain + warm spotlight */}
         <div
           className="absolute inset-0 opacity-[0.35]"
           style={{
@@ -142,7 +141,7 @@ export default function Hero() {
           <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
             Your next book is waiting on
             <span className="block" style={{ color: "var(--walnut)" }}>
-              someone’s shelf.
+              someone's shelf.
             </span>
           </h1>
 

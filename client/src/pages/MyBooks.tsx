@@ -33,7 +33,7 @@ export default function MyBooks() {
   return (
     <div className="mx-auto max-w-6xl p-6">
       <h1 className="text-xl font-semibold text-slate-900">My Books</h1>
-      <p className="mt-1 text-sm text-slate-600">Books you’ve listed.</p>
+      <p className="mt-1 text-sm text-slate-600">Books you've listed.</p>
 
       {err && (
         <div
