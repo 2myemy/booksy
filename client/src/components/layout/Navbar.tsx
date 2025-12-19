@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { cartCount, CART_EVENT } from "../../lib/cart";
 
 export default function Navbar() {
   const { isAuthed, signOut } = useAuth();
@@ -8,10 +9,36 @@ export default function Navbar() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
+  // ✅ cart badge count
+  const [count, setCount] = useState<number>(() => (isAuthed ? cartCount() : 0));
+
   // 페이지 이동 시 모바일 메뉴 자동 닫기
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
+
+  // ✅ cart count sync (same tab + other tabs)
+  useEffect(() => {
+    if (!isAuthed) {
+      setCount(0);
+      return;
+    }
+
+    const sync = () => setCount(cartCount());
+
+    // same-tab custom event
+    window.addEventListener(CART_EVENT, sync);
+    // other-tab localStorage event
+    window.addEventListener("storage", sync);
+
+    // 초기 동기화
+    sync();
+
+    return () => {
+      window.removeEventListener(CART_EVENT, sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, [isAuthed]);
 
   return (
     <header
@@ -34,7 +61,7 @@ export default function Navbar() {
           Booksy
         </Link>
 
-        {/* DESKTOP NAV (md 이상에서만 보임) */}
+        {/* DESKTOP NAV */}
         <nav className="hidden items-center gap-4 text-sm md:flex">
           <Link
             to="/books"
@@ -45,6 +72,47 @@ export default function Navbar() {
           >
             Browse
           </Link>
+
+          {/* ✅ Cart: only when authed */}
+          {isAuthed ? (
+            <Link
+              to="/cart"
+              className="relative inline-flex items-center justify-center rounded-xl border p-2 transition hover:opacity-95"
+              style={{
+                borderColor: "var(--border)",
+                backgroundColor: "rgba(255,255,255,0.6)",
+                color: "var(--walnut)",
+              }}
+              aria-label="Cart"
+              title="Cart"
+            >
+              {/* icon */}
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 6h15l-1.5 9h-12z" />
+                <circle cx="9" cy="20" r="1" />
+                <circle cx="18" cy="20" r="1" />
+              </svg>
+
+              {/* badge */}
+              {count > 0 ? (
+                <span
+                  className="absolute -right-1 -top-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-semibold text-white"
+                  style={{ backgroundColor: "var(--walnut)" }}
+                >
+                  {count}
+                </span>
+              ) : null}
+            </Link>
+          ) : null}
 
           {!isAuthed ? (
             <Link
@@ -93,7 +161,7 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* MOBILE: 햄버거 버튼만 보임 (md 미만) */}
+        {/* MOBILE: 햄버거 */}
         <button
           className="inline-flex items-center justify-center rounded-xl border p-2 md:hidden"
           style={{ borderColor: "var(--card)", color: "var(--walnut)" }}
@@ -127,12 +195,15 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* MOBILE DROPDOWN (md 미만) */}
+      {/* MOBILE DROPDOWN */}
       <div className={`md:hidden ${open ? "block" : "hidden"}`}>
         <div className="mx-auto max-w-6xl px-4 pb-4">
           <div
             className="rounded-2xl border p-2 shadow-sm"
-            style={{ borderColor: "var(--border)", backgroundColor: "rgba(255,255,255,0.9)" }}
+            style={{
+              borderColor: "var(--border)",
+              backgroundColor: "rgba(255,255,255,0.9)",
+            }}
           >
             <Link
               to="/books"
@@ -142,6 +213,33 @@ export default function Navbar() {
             >
               Browse
             </Link>
+
+            {/* ✅ Mobile Cart: only when authed */}
+            {isAuthed ? (
+              <Link
+                to="/cart"
+                className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold"
+                style={{ color: "var(--walnut)" }}
+                onClick={() => setOpen(false)}
+              >
+                <span className="flex items-center gap-2">
+                  <span>Cart</span>
+                </span>
+
+                {count > 0 ? (
+                  <span
+                    className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full px-2 text-xs font-semibold text-white"
+                    style={{ backgroundColor: "var(--walnut)" }}
+                  >
+                    {count}
+                  </span>
+                ) : (
+                  <span className="text-xs" style={{ color: "rgba(31,41,55,0.65)" }}>
+                    0
+                  </span>
+                )}
+              </Link>
+            ) : null}
 
             {!isAuthed ? (
               <Link

@@ -10,6 +10,12 @@ export type CartItem = {
 
 const CART_KEY = "booksy_cart_v1";
 
+export const CART_EVENT = "booksy:cart";
+
+function emitCartChanged() {
+  window.dispatchEvent(new Event(CART_EVENT));
+}
+
 export function getCart(): CartItem[] {
   try {
     const raw = localStorage.getItem(CART_KEY);
@@ -23,6 +29,7 @@ export function getCart(): CartItem[] {
 
 export function setCart(items: CartItem[]) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
+  emitCartChanged();
 }
 
 export function addToCart(item: CartItem) {

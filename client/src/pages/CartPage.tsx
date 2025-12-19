@@ -51,7 +51,7 @@ export default function CartPage() {
         </div>
 
         <Link to="/books" className="text-sm text-slate-700 hover:underline">
-          Continue shopping
+          Continue shopping →
         </Link>
       </div>
 

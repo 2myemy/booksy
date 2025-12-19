@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { Link } from "react-router-dom";
 import taoCover from "../../assets/tao-of-pooh.png";
 import franklCover from "../../assets/man-search-for-meaning.png";
 import lovingCover from "../../assets/art-of-loving.png";
+import { Tag } from "../../components/ui/Tag";
 
 type Book = {
   id: string;
@@ -12,7 +14,11 @@ type Book = {
   condition: string;
   cover_image_url: string | null;
 };
-const API = import.meta.env.VITE_API_URL;
+
+const API =
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
+  "";
+
 const fallbackBooks: Book[] = [
   {
     id: "fallback-1",
@@ -21,7 +27,7 @@ const fallbackBooks: Book[] = [
     price_cents: 900,
     currency: "USD",
     condition: "GOOD",
-    cover_image_url: taoCover as any,
+    cover_image_url: taoCover,
   },
   {
     id: "fallback-2",
@@ -30,7 +36,7 @@ const fallbackBooks: Book[] = [
     price_cents: 700,
     currency: "USD",
     condition: "LIKE_NEW",
-    cover_image_url: franklCover as any,
+    cover_image_url: franklCover,
   },
   {
     id: "fallback-3",
@@ -39,7 +45,7 @@ const fallbackBooks: Book[] = [
     price_cents: 1000,
     currency: "USD",
     condition: "ACCEPTABLE",
-    cover_image_url: lovingCover as any,
+    cover_image_url: lovingCover,
   },
 ];
 
@@ -52,26 +58,19 @@ const conditionLabel: Record<string, string> = {
   FAIR: "Fair",
 };
 
-const cardStyle: React.CSSProperties = {
+const cardStyle: CSSProperties = {
   backgroundColor: "rgba(255,255,255,0.72)",
   border: "1px solid rgba(180, 83, 9, 0.16)",
   backdropFilter: "blur(6px)",
   boxShadow: "0 10px 28px rgba(59, 47, 42, 0.10)",
 };
 
-const pillHoney: React.CSSProperties = {
-  backgroundColor: "rgba(180, 83, 9, 0.12)",
-  color: "var(--honey)",
-};
-
-const pillSoft: React.CSSProperties = {
-  backgroundColor: "rgba(31, 41, 55, 0.06)",
-  color: "rgba(31, 41, 55, 0.75)",
-};
-
 function formatPrice(price_cents: number) {
-  const amount = price_cents / 100;
-  return Math.round(amount);
+  return Math.round(price_cents / 100);
+}
+
+function isRealBook(id: string) {
+  return !id.startsWith("fallback-");
 }
 
 export default function Hero() {
@@ -82,11 +81,17 @@ export default function Hero() {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API}/books?sort=latest&limit=3`);
-        if (!res.ok) throw new Error("Failed to load latest books");
-        const data = await res.json(); // { books: Book[] } 또는 Book[]
 
+        const url = API
+          ? `${API}/books?sort=latest&limit=3`
+          : `/books?sort=latest&limit=3`;
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Failed to load latest books");
+
+        const data = await res.json(); // { books } or Book[]
         const list: Book[] = Array.isArray(data) ? data : data.books;
+
         setLatest((list || []).slice(0, 3));
       } catch {
         setLatest([]);
@@ -223,53 +228,68 @@ export default function Hero() {
             </div>
 
             <div className="mt-6 grid gap-4">
-              {booksToShow.map((b) => (
-                <div
-                  key={b.id}
-                  className="flex items-center justify-between rounded-2xl p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
-                  style={cardStyle}
-                >
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={b.cover_image_url || taoCover}
-                      alt={b.title}
-                      className="h-16 w-12 rounded-md object-cover shadow-sm"
-                      style={{
-                        border: "1px solid rgba(59,47,42,0.12)",
-                        boxShadow: "0 6px 14px rgba(59,47,42,0.18)",
-                        transform: "rotate(-1.5deg)",
-                      }}
-                    />
+              {booksToShow.map((b) => {
+                const clickable = isRealBook(b.id);
 
-                    <div>
-                      <div className="text-sm font-semibold">{b.title}</div>
-                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-                        {b.author && (
-                          <span
-                            className="rounded-full px-2 py-0.5"
-                            style={pillSoft}
-                          >
-                            by {b.author}
-                          </span>
-                        )}
-                        <span
-                          className="rounded-full px-2 py-0.5"
-                          style={pillHoney}
-                        >
-                          {conditionLabel[b.condition] ?? b.condition}
-                        </span>
+                const Card = (
+                  <div
+                    className={[
+                      "flex items-center justify-between rounded-2xl p-4 shadow-sm transition-transform duration-200",
+                      clickable
+                        ? "cursor-pointer hover:-translate-y-0.5"
+                        : "cursor-default opacity-80",
+                    ].join(" ")}
+                    style={cardStyle}
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={b.cover_image_url || taoCover}
+                        alt={b.title}
+                        className="h-16 w-12 rounded-md object-cover shadow-sm"
+                        style={{
+                          border: "1px solid rgba(59,47,42,0.12)",
+                          boxShadow: "0 6px 14px rgba(59,47,42,0.18)",
+                          transform: "rotate(-1.5deg)",
+                        }}
+                      />
+
+                      <div>
+                        <div className="text-sm font-semibold">{b.title}</div>
+                        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                          {b.author ? (
+                            <Tag tone="neutral">by {b.author}</Tag>
+                          ) : null}
+                          <Tag tone="meta">
+                            {conditionLabel[b.condition] ?? b.condition}
+                          </Tag>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      <div className="text-sm font-semibold">
+                        ${formatPrice(b.price_cents)}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-600">
+                        incl. tax
                       </div>
                     </div>
                   </div>
+                );
 
-                  <div className="text-right">
-                    <div className="text-sm font-semibold">
-                      ${formatPrice(b.price_cents)}
-                    </div>
-                    <div className="mt-1 text-xs text-slate-600">incl. tax</div>
-                  </div>
-                </div>
-              ))}
+                // ✅ 실제 book만 Link로 감싸기
+                return clickable ? (
+                  <Link
+                    key={b.id}
+                    to={`/books/${b.id}`}
+                    className="block focus:outline-none focus:ring-2 focus:ring-[rgba(59,47,42,0.25)] rounded-2xl"
+                  >
+                    {Card}
+                  </Link>
+                ) : (
+                  <div key={b.id}>{Card}</div>
+                );
+              })}
             </div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">

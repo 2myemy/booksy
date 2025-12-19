@@ -33,7 +33,6 @@ export default function BookDetailPage() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ cart UI state
   const [inCart, setInCart] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -61,14 +60,15 @@ export default function BookDetailPage() {
   }, [id]);
 
   const handleMessageSeller = () => {
-    if (!book) return;
-    const params = new URLSearchParams({
-      to: book.owner_id,
-      username: book.username,
-      bookId: book.id,
-      bookTitle: book.title,
-    });
-    nav(`/messages/new?${params.toString()}`);
+    // if (!book) return;
+    // const params = new URLSearchParams({
+    //   to: book.owner_id,
+    //   username: book.username,
+    //   bookId: book.id,
+    //   bookTitle: book.title,
+    // });
+    // nav(`/messages/new?${params.toString()}`);
+    alert("Message Seller coming soon :)")
   };
 
   const handleAddToCart = () => {
@@ -188,7 +188,6 @@ export default function BookDetailPage() {
           {/* ✅ Actions 카드 */}
           <div className="mt-8 rounded-2xl border bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-semibold text-slate-900">Actions</div>
               {notice ? (
                 <span className="text-xs text-slate-600">{notice}</span>
               ) : (
